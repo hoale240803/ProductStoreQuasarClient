@@ -1,11 +1,10 @@
-const user = JSON.parse(localStorage.getItem("user"));
 
-const userStates = user
-  ? { isLoggedIn: true, userInfo }
-  : { isLoggedIn: false, userInfo: null };
 
 export default {
-  userStates: userStates,
+  userStates: {
+    isLoggedIn: false,
+    userInfo: null,
+  },
   accessToken: "",
   errorResponse: null,
 };

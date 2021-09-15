@@ -137,10 +137,13 @@ export default {
         (res) => {
           // alert("login success");
           // this.$router.push("/");
+
           if (res) {
             this.message = res.message;
             //IF HAS TOKEN => LOGIN SUCESS
+
             if (res.isAuthenticated) {
+              localStorage.setItem("user", JSON.stringify(res));
               this.$q.notify({
                 color: "green-4",
                 textColor: "white",
@@ -148,6 +151,7 @@ export default {
                 message: "Login Success !",
                 position: "top",
               });
+
               this.$router.push("/");
             }
           }
@@ -175,9 +179,14 @@ export default {
           // this.$router.push("/");
           if (res) {
             this.message = res.message;
-            debugger;
+
             //IF HAS TOKEN => LOGIN SUCESS
             if (res.accessToken) {
+              localStorage.setItem(
+                "user",
+                JSON.stringify({ user: res, isLoggedIn: true })
+              );
+              debugger;
               this.$q.notify({
                 color: "green-4",
                 textColor: "white",

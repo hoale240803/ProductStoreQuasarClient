@@ -1,8 +1,8 @@
 export default {
   getIsLoggedIn: (state, getters) => {
-    return state.isLoggedIn;
+    return state.userStates.isLoggedIn;
   },
   getUserInfo: (state, getters) => {
-    return state.userInfo;
+    return state.userStates.userInfo;
   },
 };

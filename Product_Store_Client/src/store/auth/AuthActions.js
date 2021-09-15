@@ -1,5 +1,13 @@
 import AuthServices from "../../services/auth/AuthServices";
 
+const initialState = {
+  userStates: {
+    isLoggedIn: false,
+    userInfo: null,
+  },
+  accessToken: "",
+  errorResponse: null,
+};
 export default {
   login({ commit }, userLogin) {
     return AuthServices.login(userLogin).then(
@@ -16,7 +24,6 @@ export default {
   googleLogin({ commit }) {
     return AuthServices.googleSignIn().then(
       (user) => {
-        debugger;
         commit("loginSuccess", user);
         return Promise.resolve(user);
       },

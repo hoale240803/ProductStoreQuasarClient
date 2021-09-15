@@ -160,7 +160,7 @@
           icon="check"
           label="OK"
           @click="onClick"
-          v-show="getIsLoggedIn"
+          v-show="isLoggedIn"
         ></q-btn>
       </div>
     </q-toolbar>
@@ -195,16 +195,21 @@ export default {
     toggleLeftDrawer: function () {
       this.leftDrawerOpen = !this.$refs.leftDrawerOpen;
     },
-    loadData: function () {
-      console.log(
-        "isLoggedIn from store",
-        this.$store.state.auth.userStates.isLoggedIn
-      );
-      console.log("isLoggedIn from getter", this.getIsLoggedIn);
-    },
+    // loadData: function () {
+    //   // console.log(
+    //   //   "isLoggedIn from store",
+    //   //   this.$store.state.auth.userStates.isLoggedIn
+    //   // );
+    //   // console.log("isLoggedIn from getter", this.getIsLoggedIn);
+    //   var user = localStorage.getItem("user");
+    //   if (!user.isLoggedIn) {
+    //     this.$router.push("/login");
+    //   }
+    //   this.isLoggedIn = user.isLoggedIn;
+    // },
   },
   mounted() {
-    this.loadData();
+    // this.loadData();
   },
   computed: {
     ...mapGetters("auth", ["getIsLoggedIn"]),

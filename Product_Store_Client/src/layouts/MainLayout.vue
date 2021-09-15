@@ -162,7 +162,12 @@ export default {
       this.showDateOptions = false;
     },
     loadHompage: function () {
-      if (!this.getIsLoggedIn) {
+      // if (!this.getIsLoggedIn) {
+      //   this.$router.push("/login");
+      // }
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log("user after login", user.isLoggedIn);
+      if (!user.isLoggedIn) {
         this.$router.push("/login");
       }
     },
