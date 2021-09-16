@@ -14,6 +14,22 @@ const routes = [
     path: "/register",
     component: () => import("pages/register/Register.vue"),
   },
+  {
+    path: "/resetPassword",
+    component: () => import("pages/register/Register.vue"),
+  },
+  {
+    path: "/forgotPassword",
+    component: () => import("pages/register/Register.vue"),
+  },
+  {
+    path: "/product",
+    component: () => import("pages/register/Register.vue"),
+  },
+  {
+    path: "/authen",
+    component: () => import("pages/register/Register.vue"),
+  },
 
   // Always leave this as last one,
   // but you can also remove it

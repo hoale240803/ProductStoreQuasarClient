@@ -1,118 +1,276 @@
 <template>
-  <q-layout view="hHh lpR fFf" class="bg-grey-1">
-    <navbar></navbar>
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      class="bg-white"
-      :width="280"
-      ref="leftDrawerOpen"
-    >
-      <q-scroll-area class="fit">
-        <q-list padding class="text-grey-8">
-          <q-item
-            class="GNL__drawer-item"
-            v-ripple
-            v-for="link in links1"
-            :key="link.text"
-            clickable
+  <div class="q-md-lg">
+    <q-layout view="hHh lpR fFf" class="bg-grey-1">
+      <q-header elevated class="bg-white text-grey-8" height-hint="64">
+        <q-toolbar class="GNL__toolbar">
+          <q-btn
+            flat
+            dense
+            round
+            @click="drawer = !drawer"
+            aria-label="Menu"
+            icon="menu"
+            class="q-mr-sm"
+          />
+          <q-toolbar-title
+            v-if="$q.screen.gt.xs"
+            shrink
+            class="row items-center no-wrap"
           >
-            <q-item v-if="link.text === 'login'" class="link_hover">
-              <q-item-section avatar>
-                <q-icon :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }} </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item v-else>
-              <q-item-section avatar>
-                <q-icon :name="link.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ link.text }} </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-item>
+            <img
+              src="https://cdn.quasar.dev/img/layout-gallery/logo-google.svg"
+            />
+            <span class="q-ml-sm">News</span>
+          </q-toolbar-title>
+          <q-space />
+          <!-- SEARCH BAR -->
+          <q-input
+            class="GNL__toolbar-input"
+            outlined
+            dense
+            v-model="search"
+            color="bg-grey-7 shadow-1"
+            placeholder="Search for topics, locations & sources"
+          >
+            <template v-slot:prepend>
+              <q-icon v-if="search === ''" name="search" />
+              <q-icon
+                v-else
+                name="clear"
+                class="cursor-pointer"
+                @click="search = ''"
+              />
+            </template>
+            <!-- ADVANCED SEARCH -->
+            <template v-slot:append>
+              <q-btn flat dense round aria-label="Menu" icon="arrow_drop_down">
+                <q-menu anchor="bottom end" self="top end">
+                  <div class="q-pa-md" style="width: 400px">
+                    <div class="text-body2 text-grey q-mb-md">
+                      Narrow your search results
+                    </div>
 
-          <q-separator inset class="q-my-sm" />
-          <q-item
-            class="GNL__drawer-item"
-            v-ripple
-            v-for="link in links2"
-            :key="link.text"
-            clickable
-          >
-            <q-item-section avatar>
-              <q-icon :name="link.icon" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-separator inset class="q-my-sm" />
-          <q-item
-            class="GNL__drawer-item"
-            v-ripple
-            v-for="link in links3"
-            :key="link.text"
-            clickable
-          >
-            <q-item-section>
-              <q-item-label
-                >{{ link.text }} <q-icon v-if="link.icon" :name="link.icon"
-              /></q-item-label>
-            </q-item-section>
-          </q-item>
+                    <div class="row items-center">
+                      <div class="col-3 text-subtitle2 text-grey">
+                        Exact phrase
+                      </div>
+                      <div class="col-9 q-pl-md">
+                        <q-input dense v-model="exactPhrase" />
+                      </div>
 
-          <div class="q-mt-md">
-            <div class="flex flex-center q-gutter-xs">
-              <a
-                class="GNL__drawer-footer-link"
-                href="javascript:void(0)"
-                aria-label="Privacy"
-                >Privacy</a
-              >
-              <span> · </span>
-              <a
-                class="GNL__drawer-footer-link"
-                href="javascript:void(0)"
-                aria-label="Terms"
-                >Terms</a
-              >
-              <span> · </span>
-              <a
-                class="GNL__drawer-footer-link"
-                href="javascript:void(0)"
-                aria-label="About"
-                >About Google</a
-              >
-            </div>
+                      <div class="col-3 text-subtitle2 text-grey">
+                        Has words
+                      </div>
+                      <div class="col-9 q-pl-md">
+                        <q-input dense v-model="hasWords" />
+                      </div>
+
+                      <div class="col-3 text-subtitle2 text-grey">
+                        Exclude words
+                      </div>
+                      <div class="col-9 q-pl-md">
+                        <q-input dense v-model="excludeWords" />
+                      </div>
+
+                      <div class="col-3 text-subtitle2 text-grey">Website</div>
+                      <div class="col-9 q-pl-md">
+                        <q-input dense v-model="byWebsite" />
+                      </div>
+
+                      <div class="col-12 q-pt-lg row justify-end">
+                        <q-btn
+                          flat
+                          dense
+                          no-caps
+                          color="grey-7"
+                          size="md"
+                          style="min-width: 68px"
+                          label="Search"
+                          v-close-popup
+                        />
+                        <q-btn
+                          flat
+                          dense
+                          no-caps
+                          color="grey-7"
+                          size="md"
+                          style="min-width: 68px"
+                          @click="onClear"
+                          label="Clear"
+                          v-close-popup
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </q-menu>
+              </q-btn>
+            </template>
+          </q-input>
+          <q-space />
+          <div class="q-gutter-sm row items-center no-wrap">
+            <!-- APPLICATION BUTTON -->
+            <q-btn
+              v-if="$q.screen.gt.sm"
+              round
+              dense
+              flat
+              color="text-grey-7"
+              icon="apps"
+            >
+              <q-tooltip>Google Apps</q-tooltip>
+            </q-btn>
+            <!-- NOTIFICATION BUTTON -->
+            <q-btn round dense flat color="grey-8" icon="notifications">
+              <q-badge color="red" text-color="white" floating> 2 </q-badge>
+              <q-tooltip>Notifications</q-tooltip>
+              <q-menu :offset="[50, 10]">
+                <q-list style="min-width: 100px">
+                  <q-item clickable v-close-popup>
+                    <q-item-section>:offset="[50, 10]"</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup>
+                    <q-item-section>:offset="[50, 10]"</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+            <!-- PROFILE BUTTON -->
+            <q-btn round flat>
+              <q-avatar size="26px">
+                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              </q-avatar>
+              <q-tooltip>Account</q-tooltip>
+              <q-menu :offset="[50, 10]">
+                <q-list
+                  style="min-width: 100px"
+                  class="flex column justify-center items-center full-width"
+                >
+                  <q-item clickable v-close-popup>
+                    <q-icon name="person" />
+                    <q-item-section>Profile</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup v-on:click="logout">
+                    <q-icon name="logout" />
+                    <q-item-section>Log Out</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+            <q-btn
+              color="primary"
+              icon="check"
+              label="OK"
+              @click="onClick"
+              v-show="isLoggedIn"
+            ></q-btn>
           </div>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+        </q-toolbar>
+      </q-header>
+      <q-drawer
+        show-if-above
+        bordered
+        class="bg-white"
+        :width="280"
+        v-model="drawer"
+      >
+        <q-scroll-area class="fit">
+          <q-list padding class="text-grey-8">
+            <q-item
+              class="GNL__drawer-item"
+              v-ripple
+              v-for="link in links1"
+              :key="link.text"
+              clickable
+            >
+              <q-item v-if="link.text === 'login'" class="link_hover">
+                <q-item-section avatar>
+                  <q-icon :name="link.icon" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ link.text }} </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-else>
+                <q-item-section avatar>
+                  <q-icon :name="link.icon" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ link.text }} </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-item>
+            <q-separator inset class="q-my-sm" />
+            <q-item
+              class="GNL__drawer-item"
+              v-ripple
+              v-for="link in links2"
+              :key="link.text"
+              clickable
+            >
+              <q-item-section avatar>
+                <q-icon :name="link.icon" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ link.text }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-separator inset class="q-my-sm" />
+            <q-item
+              class="GNL__drawer-item"
+              v-ripple
+              v-for="link in links3"
+              :key="link.text"
+              clickable
+            >
+              <q-item-section>
+                <q-item-label
+                  >{{ link.text }} <q-icon v-if="link.icon" :name="link.icon"
+                /></q-item-label>
+              </q-item-section>
+            </q-item>
+            <div class="q-mt-md">
+              <div class="flex flex-center q-gutter-xs">
+                <a
+                  class="GNL__drawer-footer-link"
+                  href="javascript:void(0)"
+                  aria-label="Privacy"
+                  >Privacy</a
+                >
+                <span> · </span>
+                <a
+                  class="GNL__drawer-footer-link"
+                  href="javascript:void(0)"
+                  aria-label="Terms"
+                  >Terms</a
+                >
+                <span> · </span>
+                <a
+                  class="GNL__drawer-footer-link"
+                  href="javascript:void(0)"
+                  aria-label="About"
+                  >About Google</a
+                >
+              </div>
+            </div>
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
+      <q-page-container>
+        <router-view />
+      </q-page-container>
+    </q-layout>
+  </div>
 </template>
 
 <script>
-import Login from "../pages/login/Login.vue";
-import { ref } from "vue";
 import { fasGlobeAmericas, fasFlask } from "@quasar/extras/fontawesome-v5";
-import Navbar from "../components/navbar/Navbar.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "GoogleNewsLayout",
-  components: {
-    navbar: Navbar,
-  },
   data() {
     return {
-      leftDrawerOpen: false,
+      isLoggedIn: false,
+      drawer: false,
       search: "",
       showAdvanced: false,
       showDateOptions: false,
@@ -150,6 +308,24 @@ export default {
     };
   },
   methods: {
+    logout: function () {
+      this.$store.dispatch("auth/logout").then(
+        (res) => {
+          this.$router.push("/login");
+        },
+        (error) => {
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    },
+    toggleLeftDrawerNavbarComp: function (value) {
+      console.log("yyy", value);
+    },
     onClear: function () {
       this.exactPhrase = "";
       this.hasWords = "";
