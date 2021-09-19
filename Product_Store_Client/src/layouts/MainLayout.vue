@@ -363,19 +363,15 @@ export default {
       }
     },
     logout: function () {
-      this.$store.dispatch("auth/logout").then(
-        (res) => {
-          this.$router.push("/login");
-        },
-        (error) => {
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      this.$router.push("/login");
+      this.$q.notify({
+        color: "green-3",
+        textColor: "white",
+        icon: "cloud_done",
+        message: "Logout Success !",
+        position: "top",
+      });
+      this.$store.dispatch("auth/logout").then((res) => {});
     },
     onClear: function () {
       this.exactPhrase = "";
@@ -393,8 +389,8 @@ export default {
       //   this.$router.push("/login");
       // }
       const user = JSON.parse(localStorage.getItem("user"));
-
-      if (!(user && user.isLoggedIn)) {
+      debugger;
+      if (!(user && user.isLoggedIn) && !user.isAuthenticated) {
         this.$router.push("/login");
       }
     },

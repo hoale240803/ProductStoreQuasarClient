@@ -17,7 +17,7 @@ class AuthServices {
   }
   register(dataRegister) {
     return http
-      .post(`/${BASE_ENPOINT}/registerHasRole`, dataRegister)
+      .post(`/${BASE_ENPOINT}/registerConfirmedEmail`, dataRegister)
       .then((response) => {
         return response;
       })
@@ -27,6 +27,7 @@ class AuthServices {
   }
   logout() {
     localStorage.removeItem("user");
+
   }
   googleSignIn() {
     const auth = getAuth();

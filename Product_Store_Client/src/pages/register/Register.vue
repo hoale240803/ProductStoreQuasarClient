@@ -1,25 +1,26 @@
 <template>
-  <div class="q-pa-md" style="max-width: 400px">
-    <h1>Register</h1>
-    <q-form @submit="onSubmit" class="q-gutter-md">
-      <label for="">Username</label>
-      <q-input filled v-model="form.Username" label="Username *" />
-      <label for="">Email</label>
-      <q-input
-        filled
-        v-model="form.Email"
-        label="Email *"
-        :rules="emailRules"
-      />
-      <label for="">Password</label>
-      <q-input
-        filled
-        type="password"
-        v-model="form.Password"
-        label="Password *"
-        :rules="passwordRules"
-      />
-      <!-- <label for="">Confirm Password <span>*</span></label>
+  <div class="center-position">
+    <div class="q-pa-md" style="max-width: 400px">
+      <h1>Register</h1>
+      <q-form @submit="onSubmit" class="q-gutter-md">
+        <label for="">Username</label>
+        <q-input filled v-model="form.Username" label="Username *" />
+        <label for="">Email</label>
+        <q-input
+          filled
+          v-model="form.Email"
+          label="Email *"
+          :rules="emailRules"
+        />
+        <label for="">Password</label>
+        <q-input
+          filled
+          type="password"
+          v-model="form.Password"
+          label="Password *"
+          :rules="passwordRules"
+        />
+        <!-- <label for="">Confirm Password <span>*</span></label>
       <q-input
         filled
         type="password"
@@ -27,19 +28,20 @@
         :rules="isConfirmedPassRules"
       /> -->
 
-      <div>
-        <q-btn label="Register" type="submit" color="primary" />
         <div>
-          <h5>
-            I've alreay have an account,
-            <p v-on:click="handleLogin" class="link">Login</p>
-          </h5>
+          <q-btn label="Register" type="submit" color="primary" />
+          <div>
+            <h5>
+              I've alreay have an account,
+              <p v-on:click="handleLogin" class="link">Login</p>
+            </h5>
+          </div>
+          <div v-on:click="handleForgotPassword" class="link">
+            Forgot Password
+          </div>
         </div>
-        <div v-on:click="handleForgotPassword" class="link">
-          Forgot Password
-        </div>
-      </div>
-    </q-form>
+      </q-form>
+    </div>
   </div>
 </template>
 
@@ -109,6 +111,7 @@ export default {
       };
     },
     onSubmit: function () {
+      debugger;
       this.loading = true;
       console.log("myform>>", this.form);
       this.$store.dispatch("auth/register", this.form).then(
@@ -116,11 +119,13 @@ export default {
           // alert("login success");
           // this.$router.push("/");
           if (res) {
+            this.loading = false;
             //GET DATA FROM RESPONSE
-            console.log("resgister res>>>", res);
+            // console.log("resgister res>>>", res);
             //GET DATA FROM STORE
             // console.log("res>>>", this.$store.state.auth.errorResponse);
-            if (res.status != 200) {
+            debugger;
+            if (res.status != "200") {
               this.$q.notify({
                 color: "negative",
                 textColor: "white",
@@ -159,8 +164,6 @@ export default {
           // });
         }
       );
-
-      this.loading = false;
     },
     onReset: function () {
       // this.getEmptyForm();
@@ -171,6 +174,12 @@ export default {
 </script>
 
 <style scoped>
+.center-position {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 700px;
+}
 .link {
   cursor: pointer;
   color: blue;
