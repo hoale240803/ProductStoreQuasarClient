@@ -1,6 +1,7 @@
 <template>
   <div class="q-md-lg">
     <q-layout view="hHh lpR fFf" class="bg-grey-1">
+      <!-- HEADER -->
       <q-header elevated class="bg-white text-grey-8" height-hint="64">
         <q-toolbar class="GNL__toolbar">
           <q-btn
@@ -122,7 +123,7 @@
             <!-- NOTIFICATION BUTTON -->
             <q-btn round dense flat color="grey-8" icon="notifications">
               <q-badge color="red" text-color="white" floating> 2 </q-badge>
-              <q-tooltip>Notifications</q-tooltip>
+              <q-tooltip :hide-delay="1">Notifications</q-tooltip>
               <q-menu :offset="[50, 10]">
                 <q-list style="min-width: 100px">
                   <q-item clickable v-close-popup>
@@ -135,17 +136,17 @@
               </q-menu>
             </q-btn>
             <!-- PROFILE BUTTON -->
-            <q-btn round flat>
+            <q-btn round flat @click="clickAccount">
               <q-avatar size="26px">
                 <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
               </q-avatar>
-              <q-tooltip>Account</q-tooltip>
+              <q-tooltip v-model="showAccount">Account</q-tooltip>
               <q-menu :offset="[50, 10]">
                 <q-list
                   style="min-width: 100px"
                   class="flex column justify-center items-center full-width"
                 >
-                  <q-item clickable v-close-popup>
+                  <q-item clickable v-close-popup @click="goToProfile">
                     <q-icon name="person" />
                     <q-item-section>Profile</q-item-section>
                   </q-item>
@@ -166,6 +167,7 @@
           </div>
         </q-toolbar>
       </q-header>
+      <!-- MENU -->
       <q-drawer
         show-if-above
         bordered
@@ -180,6 +182,7 @@
               v-ripple
               v-for="link in links1"
               :key="link.text"
+              @click="handleNavigate(link.code)"
               clickable
             >
               <q-item v-if="link.text === 'login'" class="link_hover">
@@ -263,12 +266,24 @@
 </template>
 
 <script>
-import { fasGlobeAmericas, fasFlask } from "@quasar/extras/fontawesome-v5";
+import {
+  fasGlobeAmericas,
+  fasFlask,
+  fasCubes,
+  fasUser,
+  fasReceipt,
+  fasShoppingBasket,
+  fasWarehouse,
+  fasShip,
+  fasShoppingCart,
+  fasShippingFast,
+} from "@quasar/extras/fontawesome-v5";
 import { mapGetters } from "vuex";
 export default {
   name: "GoogleNewsLayout",
   data() {
     return {
+      showAccount: false,
       isLoggedIn: false,
       drawer: false,
       search: "",
@@ -280,6 +295,12 @@ export default {
       byWebsite: "",
       byDate: "Any time",
       links1: [
+        { icon: fasCubes, text: "Products", code: "product" },
+        { icon: fasUser, text: "Employees", code: "employee" },
+        { icon: fasReceipt, text: "Orders History", code: "orders_history" },
+        { icon: fasShoppingCart, text: "Orders", code: "orders_status" },
+        { icon: fasWarehouse, text: "Inventory", code: "inventory" },
+        { icon: fasShippingFast, text: "Shipper", code: "shipper" },
         { icon: "web", text: "Top stories" },
         { icon: "person", text: "For you" },
         { icon: "star_border", text: "Favourites" },
@@ -308,6 +329,39 @@ export default {
     };
   },
   methods: {
+    clickAccount: function () {
+      this.showAccount = false;
+    },
+    goToProfile: function () {
+      this.$router.push("/profile");
+    },
+    handleNavigate: function (code) {
+      debugger;
+      if (code) {
+        switch (code) {
+          case "product":
+            this.$router.push("/product");
+            break;
+          case "employee":
+            this.$router.push("/employee");
+            break;
+          case "orders_history":
+            this.$router.push("/orders_history");
+            break;
+          case "orders_status":
+            this.$router.push("/orders_status");
+            break;
+          case "inventory":
+            this.$router.push("/inventory");
+            break;
+          case "shipper":
+            this.$router.push("/shipper");
+            break;
+          default:
+            break;
+        }
+      }
+    },
     logout: function () {
       this.$store.dispatch("auth/logout").then(
         (res) => {
@@ -322,9 +376,6 @@ export default {
             error.toString();
         }
       );
-    },
-    toggleLeftDrawerNavbarComp: function (value) {
-      console.log("yyy", value);
     },
     onClear: function () {
       this.exactPhrase = "";
@@ -342,8 +393,8 @@ export default {
       //   this.$router.push("/login");
       // }
       const user = JSON.parse(localStorage.getItem("user"));
-      console.log("user after login", user.isLoggedIn);
-      if (!user.isLoggedIn) {
+
+      if (!(user && user.isLoggedIn)) {
         this.$router.push("/login");
       }
     },

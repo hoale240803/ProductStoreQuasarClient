@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div class="q-pa-md" style="max-width: 400px">
+  <div class="center-position">
+    <div class="q-pa-md" style="max-width: 700px">
+      <h1>Login</h1>
       <q-form @submit.prevent.stop="onSubmit" class="q-gutter-md">
         <q-input
           filled
@@ -21,51 +22,73 @@
           hint="Password"
         />
 
-        <div>
-          <q-btn label="Submit" type="submit" color="primary" />
+        <div class="">
           <q-btn
-            label="Reset"
-            type="reset"
+            label="Login"
+            type="submit"
             color="primary"
-            flat
-            class="q-ml-sm"
+            style="width: 100%"
+            class="q-mt-lg"
           />
         </div>
-        <!-- REGISTER -->
+        <!-- REGISTER & RESET-->
         <div>
-          <q-btn label="Register" to="/register" color="primary" />
+          <div class="register_reset row">
+            <q-btn
+              label="Register"
+              to="/register"
+              color="primary"
+              class="col-5"
+            />
+            <q-btn
+              label="Reset"
+              type="reset"
+              color="primary"
+              flat
+              class="q-ml-sm col-5"
+            />
+          </div>
+          <div v-on:click="handleForgotPassword" class="link">
+            Forgot password
+          </div>
         </div>
       </q-form>
-      <!-- GOOGLE LOGIN -->
-      <button @click="login">Connection</button>
-      <p>
-        or Sign In with Google <br />
-        <button @click="onGoogleSignIn" class="social-button">
-          <img
-            alt="Google Logo"
-            src="../../assets/social-login/google-logo.png"
+
+      <div class="social-btn">
+        <!-- GOOGLE LOGIN -->
+        <p>
+          <br />
+          <button @click="onGoogleSignIn" class="social-button">
+            <img
+              alt="Google Logo"
+              src="../../assets/social-login/google-logo.png"
+            />
+          </button>
+        </p>
+
+        <!-- FACEBOOK LOGIN -->
+        <div>
+          <q-btn
+            label="FACEBOOK LOGIN"
+            v-on:click="facebookLoginHandle"
+            color="primary"
           />
-        </button>
-      </p>
-      <p>
-        You don't have an account ? You can
-        <router-link to="/sign-up">create one</router-link>
-      </p>
-      <!-- FACEBOOK LOGIN -->
-      <div>
-        <q-btn
-          label="FACEBOOK LOGIN"
-          v-on:click="facebookLoginHandle"
-          color="primary"
-        />
+        </div>
+        <!-- TWITTER LOGIN -->
+        <div class="q-ml-lg">
+          <q-btn
+            label="TWITTER LOGIN"
+            v-on:click="twitterLoginHandle()"
+            color="primary"
+          />
+        </div>
       </div>
-      <!-- TWITTER LOGIN -->
+      <!-- Create an acount -->
       <div>
-        <q-btn
-          label="TWITTER LOGIN"
-          v-on:click="twitterLoginHandle()"
-          color="primary"
-        />
+        <p>
+          You don't have an account ? You can
+          <router-link to="/register">create one</router-link>
+        </p>
       </div>
     </div>
 
@@ -102,6 +125,9 @@ export default {
     };
   },
   methods: {
+    handleForgotPassword: function () {
+      this.$router.push("/forgotPassword");
+    },
     googleLoginHandle: function () {},
     facebookLoginHandle: function () {},
     twitterLoginHandle: function () {},
@@ -222,6 +248,24 @@ export default {
 </script>
 
 <style scoped>
+.register_reset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+.center-position {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 700px;
+}
 .social-button {
   width: 75px;
   background: white;
@@ -236,5 +280,10 @@ export default {
 }
 .social-button img {
   width: 100%;
+}
+.link {
+  cursor: pointer;
+  color: blue;
+  padding: 1rem;
 }
 </style>

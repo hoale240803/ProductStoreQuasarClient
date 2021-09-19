@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <h1>User List</h1>
+    <h1>Inventory List</h1>
     <q-table
       ref="myTable"
       title="User Table"

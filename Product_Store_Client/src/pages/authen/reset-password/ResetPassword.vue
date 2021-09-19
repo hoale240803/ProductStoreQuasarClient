@@ -1,25 +1,25 @@
 <template>
-  <div class="q-pa-md" style="max-width: 400px">
-    <h1>Register</h1>
-    <q-form @submit="onSubmit" class="q-gutter-md">
-      <label for="">Username</label>
-      <q-input filled v-model="form.Username" label="Username *" />
-      <label for="">Email</label>
-      <q-input
-        filled
-        v-model="form.Email"
-        label="Email *"
-        :rules="emailRules"
-      />
-      <label for="">Password</label>
-      <q-input
-        filled
-        type="password"
-        v-model="form.Password"
-        label="Password *"
-        :rules="passwordRules"
-      />
-      <!-- <label for="">Confirm Password <span>*</span></label>
+  <div class="center-position">
+    <div class="q-pa-md" style="max-width: 700px">
+      <h2>Reset password</h2>
+      <q-form @submit="onSubmit" class="q-gutter-md">
+        <label for="">New Password</label>
+        <q-input
+          filled
+          type="password"
+          v-model="form.Password"
+          label="Password *"
+          :rules="passwordRules"
+        />
+        <label for="">Confirm Password</label>
+        <q-input
+          filled
+          type="confirmPassword"
+          v-model="form.Password"
+          label="Confirm Password *"
+          :rules="passwordRules"
+        />
+        <!-- <label for="">Confirm Password <span>*</span></label>
       <q-input
         filled
         type="password"
@@ -27,19 +27,17 @@
         :rules="isConfirmedPassRules"
       /> -->
 
-      <div>
-        <q-btn label="Register" type="submit" color="primary" />
         <div>
-          <h5>
-            I've alreay have an account,
-            <p v-on:click="handleLogin" class="link">Login</p>
-          </h5>
+          <q-btn label="Reset password" type="submit" color="primary" />
+          <div>
+            <h5>
+              I've alreay have an account,
+              <p v-on:click="handleLogin" class="link">Login</p>
+            </h5>
+          </div>
         </div>
-        <div v-on:click="handleForgotPassword" class="link">
-          Forgot Password
-        </div>
-      </div>
-    </q-form>
+      </q-form>
+    </div>
   </div>
 </template>
 
@@ -72,9 +70,6 @@ export default {
     };
   },
   methods: {
-    handleForgotPassword: function () {
-      this.$router.push("/forgotPassword");
-    },
     handleLogin: function () {
       this.$router.push("/login");
     },
@@ -171,6 +166,12 @@ export default {
 </script>
 
 <style scoped>
+.center-position {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 700px;
+}
 .link {
   cursor: pointer;
   color: blue;
