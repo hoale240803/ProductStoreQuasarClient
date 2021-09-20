@@ -27,7 +27,6 @@ class AuthServices {
   }
   logout() {
     localStorage.removeItem("user");
-
   }
   googleSignIn() {
     const auth = getAuth();
@@ -62,6 +61,27 @@ class AuthServices {
       });
   }
   googleSignOut() {}
+  forgotPassword(email) {
+    return http
+      .post(`/${BASE_ENPOINT}/forgot-password`, email)
+      .then((response) => {
+        return response;
+      })
+      .catch(({ response }) => {
+        return response;
+      });
+  }
+
+  resetPassword(form) {
+    return http
+      .post(`/${BASE_ENPOINT}/reset-password`, form)
+      .then((response) => {
+        return response;
+      })
+      .catch(({ response }) => {
+        return response;
+      });
+  }
 }
 
 export default new AuthServices();

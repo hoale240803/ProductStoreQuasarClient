@@ -1,5 +1,3 @@
-
-
 export default {
   userStates: {
     isLoggedIn: false,
@@ -7,4 +5,8 @@ export default {
   },
   accessToken: "",
   errorResponse: null,
+  forgotInfo: {
+    email: "",
+    token: "",
+  },
 };

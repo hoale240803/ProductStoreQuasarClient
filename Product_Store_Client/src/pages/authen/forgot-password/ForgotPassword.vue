@@ -35,8 +35,6 @@ export default {
       loading: false,
       isFormError: false,
       form: {
-        Username: "",
-        Password: "",
         Email: "",
       },
       isFromValid: false,
@@ -44,15 +42,6 @@ export default {
       emailRules: [
         (val) => (val !== null && val !== "") || "Please type your email",
         // (val) => this.isValidEmail(val) || "Please type valid email",
-      ],
-      passwordRules: [
-        (val) => (val !== null && val !== "") || "Please type your password",
-        // (val) => this.isStrongPassword(val) || "Please type a strong password",
-      ],
-      isConfirmedPassRules: [
-        (val) =>
-          this.isConfirmedPass(val) ||
-          "Please The confirmed password and pasword must be the same",
       ],
     };
   },
@@ -69,12 +58,7 @@ export default {
       }
       return true;
     },
-    isStrongPassword: function (password) {
-      let strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/g;
-      let matcher = password.match(strongPassword);
-      if (matcher) return true;
-      return false;
-    },
+
     isValidEmail: function (email) {
       let isValidEmail =
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -82,35 +66,30 @@ export default {
       if (matcher) return true;
       return false;
     },
-    isConfirmedPass: function (confirmPass) {
-      if (this.form.password === confirmPass) return true;
-      return false;
-    },
     getEmptyForm: function () {
       this.form = {
         Email: "",
-        Username: "",
-        Password: "",
       };
     },
     onSubmit: function () {
       this.loading = true;
       console.log("myform>>", this.form);
-      this.$store.dispatch("auth/register", this.form).then(
+      this.$store.dispatch("auth/forgotPassword", this.form).then(
         (res) => {
-          // alert("login success");
-          // this.$router.push("/");
+          let data = res.data;
+          debugger;
           if (res) {
-            //GET DATA FROM RESPONSE
-            console.log("resgister res>>>", res);
-            //GET DATA FROM STORE
-            // console.log("res>>>", this.$store.state.auth.errorResponse);
-            if (res.status != 200) {
+            console.log("forgot password res>>>", data);
+            let message =
+              data && data.message
+                ? data.message
+                : "The Email field is not a valid e-mail address.";
+            if (data.status != 200) {
               this.$q.notify({
                 color: "negative",
                 textColor: "white",
                 icon: "cloud_done",
-                message: res.message,
+                message: message,
                 position: "top",
               });
             } else {
@@ -118,33 +97,17 @@ export default {
                 color: "positive",
                 textColor: "white",
                 icon: "cloud_done",
-                message: res.message,
+                message: "We sent to your email, check it please",
                 position: "top",
               });
-              this.$router.push("/login");
             }
           }
         },
         (error) => {
           this.loading = false;
-          // this.message =
-          //   (error.response &&
-          //     error.response.data &&
-          //     error.response.data.message) ||
-          //   error.message ||
-          //   error.toString();
-
           const response = this.$store.state.auth.errorResponse;
-          // this.$q.notify({
-          //   color: "danger",
-          //   textColor: "white",
-          //   icon: "cloud_done",
-          //   message: response.message,
-          //   position: "top",
-          // });
         }
       );
-
       this.loading = false;
     },
     onReset: function () {

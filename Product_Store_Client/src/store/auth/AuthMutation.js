@@ -11,6 +11,10 @@ const initialState = {
   },
   accessToken: "",
   errorResponse: null,
+  forgotInfo: {
+    email: "",
+    token: "",
+  },
 };
 export default {
   loginSuccess(state = initialState, user) {
@@ -32,5 +36,10 @@ export default {
   registerFailure(state = initialState, payload) {
     state.userStates.isLoggedIn = false;
     state.errorResponse = payload;
+  },
+  forgotToken(state = initialState, payload) {
+    debugger;
+    state.forgotInfo.token = payload.token;
+    state.forgotInfo.email = payload.email;
   },
 };

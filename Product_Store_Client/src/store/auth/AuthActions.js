@@ -1,13 +1,13 @@
 import AuthServices from "../../services/auth/AuthServices";
 
-const initialState = {
-  userStates: {
-    isLoggedIn: false,
-    userInfo: null,
-  },
-  accessToken: "",
-  errorResponse: null,
-};
+// const initialState = {
+//   userStates: {
+//     isLoggedIn: false,
+//     userInfo: null,
+//   },
+//   accessToken: "",
+//   errorResponse: null,
+// };
 export default {
   login({ commit }, userLogin) {
     return AuthServices.login(userLogin).then(
@@ -50,6 +50,27 @@ export default {
       },
       (error) => {
         commit("registerFailure", error);
+        return Promise.reject(error);
+      }
+    );
+  },
+  forgotPassword({ commit }, email) {
+    return AuthServices.forgotPassword(email).then(
+      (res) => {
+        commit("forgotToken", res.data);
+        return Promise.resolve(res);
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+  },
+  resetPassword({ commit }, form) {
+    return AuthServices.resetPassword(form).then(
+      (res) => {
+        return Promise.resolve(res);
+      },
+      (error) => {
         return Promise.reject(error);
       }
     );

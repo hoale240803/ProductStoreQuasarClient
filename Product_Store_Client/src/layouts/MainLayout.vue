@@ -390,8 +390,10 @@ export default {
       // }
       const user = JSON.parse(localStorage.getItem("user"));
       debugger;
-      if (!(user && user.isLoggedIn) && !user.isAuthenticated) {
-        this.$router.push("/login");
+      if (user) {
+        if (!user.isLoggedIn && !user.isAuthenticated) {
+          this.$router.push("/login");
+        }
       }
     },
     // loadGoogleLogin: function () {

@@ -15,7 +15,7 @@
         <q-input
           filled
           type="confirmPassword"
-          v-model="form.Password"
+          v-model="form.ConfirmPassword"
           label="Confirm Password *"
           :rules="passwordRules"
         />
@@ -42,15 +42,17 @@
 </template>
 
 <script>
+// import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       loading: false,
       isFormError: false,
       form: {
-        Username: "",
         Password: "",
+        ConfirmPassword: "",
         Email: "",
+        token: "",
       },
       isFromValid: false,
       success: false,
@@ -85,42 +87,39 @@ export default {
       if (matcher) return true;
       return false;
     },
-    isValidEmail: function (email) {
-      let isValidEmail =
-        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      let matcher = email.match(isValidEmail);
-      if (matcher) return true;
-      return false;
-    },
     isConfirmedPass: function (confirmPass) {
       if (this.form.password === confirmPass) return true;
       return false;
     },
     getEmptyForm: function () {
       this.form = {
-        Email: "",
-        Username: "",
         Password: "",
       };
     },
     onSubmit: function () {
       this.loading = true;
+      // GET FORGOTPASSWORD
+      console.log("reset token", this.$route.query.token);
+      console.log("reset email", this.$route.query.email);
+      this.form.token = this.$route.query.token;
+      this.form.Email = this.$route.query.email;
       console.log("myform>>", this.form);
-      this.$store.dispatch("auth/register", this.form).then(
+      this.$store.dispatch("auth/resetPassword", this.form).then(
         (res) => {
-          // alert("login success");
-          // this.$router.push("/");
           if (res) {
-            //GET DATA FROM RESPONSE
-            console.log("resgister res>>>", res);
-            //GET DATA FROM STORE
-            // console.log("res>>>", this.$store.state.auth.errorResponse);
+            let data = res.data;
+            debugger;
+            console.log("reset password res>>>", res);
+
             if (res.status != 200) {
+              let message = data.listMessage[1];
               this.$q.notify({
                 color: "negative",
                 textColor: "white",
                 icon: "cloud_done",
-                message: res.message,
+                message: message
+                  ? message.description
+                  : "Please re-check password",
                 position: "top",
               });
             } else {
@@ -128,7 +127,7 @@ export default {
                 color: "positive",
                 textColor: "white",
                 icon: "cloud_done",
-                message: res.message,
+                message: "Reset password success!",
                 position: "top",
               });
               this.$router.push("/login");
@@ -137,21 +136,7 @@ export default {
         },
         (error) => {
           this.loading = false;
-          // this.message =
-          //   (error.response &&
-          //     error.response.data &&
-          //     error.response.data.message) ||
-          //   error.message ||
-          //   error.toString();
-
           const response = this.$store.state.auth.errorResponse;
-          // this.$q.notify({
-          //   color: "danger",
-          //   textColor: "white",
-          //   icon: "cloud_done",
-          //   message: response.message,
-          //   position: "top",
-          // });
         }
       );
 
@@ -162,6 +147,9 @@ export default {
     },
   },
   mounted() {},
+  // computed: {
+  //   ...mapGetters("auth", ["forgotInfo"]),
+  // },
 };
 </script>
 
