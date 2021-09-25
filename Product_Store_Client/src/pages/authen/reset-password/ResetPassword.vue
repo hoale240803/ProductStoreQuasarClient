@@ -130,7 +130,7 @@ export default {
                 message: "Reset password success!",
                 position: "top",
               });
-              this.$router.push("/login");
+              this.$router.push("/login");nguy
             }
           }
         },

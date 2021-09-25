@@ -226,6 +226,7 @@ const rows = [
 export default {
   data() {
     return {
+      filter: "",
       columns: columns,
       rows: rows,
       rowSelected: [],
@@ -238,6 +239,11 @@ export default {
         { value: "value2", label: "label2" },
       ],
       userSelected: null,
+      productParameters: {
+        keyword: "",
+        pageNumber: 0,
+        pageSize: 15,
+      },
     };
   },
   methods: {
@@ -260,53 +266,25 @@ export default {
         this.userData = this.rows;
       }
     },
-    // addRow() {
-    //   this.loading = true;
-    //   setTimeout(() => {
-    //     const index = Math.floor(Math.random() * (this.data.length + 1)),
-    //       row = this.original[Math.floor(Math.random() * this.original.length)];
-    //     if (this.data.length === 0) {
-    //       this.rowCount = 0;
-    //     }
-    //     row.id = ++this.rowCount;
-    //     const addRow = { ...row }; // extend({}, row, { name: `${row.name} (${row.__count})` })
-    //     this.data = [
-    //       ...this.data.slice(0, index),
-    //       addRow,
-    //       ...this.data.slice(index),
-    //     ];
-    //     this.loading = false;
-    //   }, 500);
-    // },
-    // removeRow() {
-    //   this.loading = true;
-    //   setTimeout(() => {
-    //     const index = Math.floor(Math.random() * this.data.length);
-    //     this.data = [
-    //       ...this.data.slice(0, index),
-    //       ...this.data.slice(index + 1),
-    //     ];
-    //     this.loading = false;
-    //   }, 500);
-    // },
-    setRowSelected: function (row) {
-      if (this.selectedRows.length > 0) {
-        // Use QTable API to determine if row is selected or not:
-        let result = this.$refs.myTable.isRowSelected(row.id);
-        // Alternative code, works as well, but less performant:
-        // let result = this.selectedRows.some ( selRow => selRow['id'] === row.id );
-        // Caution: let result = this.selectedRows.includes(row.id); does NOT do the job to find the id,
-        // since selectedRows is an array of objects: [ {id: 1, ...}, ...]
-        // Using "some" is the right solution for it, see
-        // https://stackoverflow.com/questions/8217419/how-to-determine-if-javascript-array-contains-an-object-with-an-attribute-that-e
-        console.log(
-          "row.name/id/result:",
-          row.name + "/" + row.id + "/" + result
+    getProductList: function () {
+      debugger;
+      this.$store
+        .dispatch("product/getProductList", this.productParameters)
+        .then(
+          (res) => {
+            this.loading = false;
+            console.log("productlist >>>>>", res);
+          },
+          (error) => {
+            this.loading = false;
+            console.log(error);
+          }
         );
-        return result;
-      } else return false;
     },
   },
   computed: {},
+  mounted() {
+    this.getProductList();
+  },
 };
 </script>

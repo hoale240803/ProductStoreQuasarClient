@@ -1,11 +1,11 @@
 import http from "../http";
 
 class ProductServices {
-  getAll() {
-    return http.get("/products");
+  getAll(productParameters) {
+    return http.post("/Products/search/paging", productParameters);
   }
 
-  get(id) {
+  getById(id) {
     return http.get(`/products/${id}`);
   }
 
@@ -27,6 +27,19 @@ class ProductServices {
 
   findByName(name) {
     return http.get(`/products?name=${name}`);
+  }
+
+  getAllGroupByCategoryLastest(searchCategories) {
+    return http.post("/products/groupbycategoryLatest", searchCategories);
+  }
+  updateManyProduct(productList) {
+    return http.put(`/products/updateManyProduct`, productList);
+  }
+  createManyProduct(productList) {
+    return http.post(`/products/createManyProduct`, productList);
+  }
+  deleteManyProduct(productList) {
+    return http.delete(`/products/deleteManyProduct`, productList);
   }
 }
 

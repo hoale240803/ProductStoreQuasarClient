@@ -278,7 +278,9 @@ import {
   fasShoppingCart,
   fasShippingFast,
 } from "@quasar/extras/fontawesome-v5";
+
 import { mapGetters } from "vuex";
+
 export default {
   name: "GoogleNewsLayout",
   data() {
@@ -328,6 +330,9 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters("auth", ["getIsLoggedIn", "getUserInfo", "getFogotToken"]),
+  },
   methods: {
     clickAccount: function () {
       this.showAccount = false;
@@ -336,7 +341,6 @@ export default {
       this.$router.push("/profile");
     },
     handleNavigate: function (code) {
-      debugger;
       if (code) {
         switch (code) {
           case "product":
@@ -389,12 +393,13 @@ export default {
       //   this.$router.push("/login");
       // }
       const user = JSON.parse(localStorage.getItem("user"));
-      debugger;
       if (user) {
         if (!user.isLoggedIn && !user.isAuthenticated) {
           this.$router.push("/login");
         }
       }
+      debugger;
+      console.log("getIsLoggedIn getter", this.getIsLoggedIn);
     },
     // loadGoogleLogin: function () {
     //   gapi.signin2.render("google-signin-btn", {
@@ -407,10 +412,6 @@ export default {
   mounted() {
     this.loadHompage();
     // this.loadGoogleLogin();
-  },
-
-  computed: {
-    ...mapGetters("auth", ["getIsLoggedIn"]),
   },
 };
 </script>

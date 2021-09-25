@@ -198,7 +198,7 @@ export default {
     onReset: function () {
       // this.getEmptyForm();
     },
-    async onGoogleSignIn() {
+    onGoogleSignIn() {
       this.$store.dispatch("auth/googleLogin").then(
         (res) => {
           // alert("login success");

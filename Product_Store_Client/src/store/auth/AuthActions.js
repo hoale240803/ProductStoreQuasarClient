@@ -22,6 +22,7 @@ export default {
     );
   },
   googleLogin({ commit }) {
+    debugger;
     return AuthServices.googleSignIn().then(
       (user) => {
         commit("loginSuccess", user);
@@ -34,8 +35,8 @@ export default {
     );
   },
   logout({ commit }) {
-    AuthServices.logout();
     commit("logout");
+    AuthServices.logout();
   },
   register({ commit }, user) {
     return AuthServices.register(user).then(

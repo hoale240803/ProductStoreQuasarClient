@@ -1,44 +1,24 @@
-// const user = JSON.parse(localStorage.getItem("user"));
-
-// const userStates = user
-//   ? { isLoggedIn: true, userInfo: user.userInfo }
-//   : { isLoggedIn: false, userInfo: null };
-
-const initialState = {
-  userStates: {
-    isLoggedIn: false,
-    userInfo: null,
-  },
-  accessToken: "",
-  errorResponse: null,
-  forgotInfo: {
-    email: "",
-    token: "",
-  },
-};
 export default {
-  loginSuccess(state = initialState, user) {
+  loginSuccess(state, user) {
     debugger;
-    state.userStates = user.userInfo;
-    state.accessToken = user.accessToken;
+    state.userStates.isLoggedIn = user.isAuthenticated;
+    state.userStates.userInfo = user;
   },
-  loginFailure(state = initialState) {
+  loginFailure(state) {
     state.userStates.isLoggedIn = false;
     state.userStates = null;
   },
-  logout(state = initialState) {
-    state.userStates.isLoggedIn = false;
-    state.userStates = null;
-  },
-  registerSuccess(state = initialState) {
+  logout(state) {
     state.userStates.isLoggedIn = false;
   },
-  registerFailure(state = initialState, payload) {
+  registerSuccess(state) {
+    state.userStates.isLoggedIn = false;
+  },
+  registerFailure(state, payload) {
     state.userStates.isLoggedIn = false;
     state.errorResponse = payload;
   },
-  forgotToken(state = initialState, payload) {
-    debugger;
+  forgotToken(state, payload) {
     state.forgotInfo.token = payload.token;
     state.forgotInfo.email = payload.email;
   },
