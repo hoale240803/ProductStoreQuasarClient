@@ -1,18 +1,30 @@
 <template>
   <div class="q-pa-md">
     <h1>Product List</h1>
+    <q-btn
+      color="secondary"
+      label="Update Multi"
+      v-show="showEditBtn"
+      @click="handleEditMultiProduct"
+    />
+    <q-btn
+      color="negative"
+      label="Delete Multi"
+      v-show="showDeleteBtn"
+      @click="handleDeleteMultiProduct"
+    />
     <q-table
-      ref="myTable"
-      title="User Table"
-      :rows="rows"
+      :rows="productData"
       :columns="columns"
+      ref="myTable"
+      title="Product Table"
       row-key="name"
-      selection="multiple"
       :loading="loading"
       :filter="filter"
-      paginations="paginations"
-      :data="userData"
-      v-model:selected="selectedRows"
+      :selected-rows-label="getSelectedString"
+      selection="multiple"
+      v-model:selected="rowSelected"
+      @update:selected="handleUpdateSelected"
     >
       <!-- COMBOBOX -->
       <template v-slot:top-left>
@@ -78,6 +90,33 @@
           </template>
         </q-input>
       </template>
+      <!-- BODY-CELL-SLOT --- STATUS -->
+      <template v-slot:body-cell-status="props">
+        <q-td :props="props">
+          <div>
+            <q-badge color="purple" :label="props.value" />
+          </div>
+          <div class="my-table-details">
+            {{ props.row.country }}
+          </div>
+        </q-td>
+      </template>
+      <!-- BODY-CELL-SLOT --- price -->
+      <template v-slot:body-cell-price="props">
+        <q-td :props="props">
+          <div>
+            <q-badge
+              v-if="props.row.price === 0 || props.row.price === null"
+              color="negative"
+              :label="props.row.price"
+            />
+            <q-badge v-else color="green" :label="props.row.price" />
+          </div>
+          <div class="my-table-details">
+            {{ props.row.country }}
+          </div>
+        </q-td>
+      </template>
     </q-table>
   </div>
 </template>
@@ -85,141 +124,43 @@
 <script>
 const columns = [
   {
+    name: "index",
+    required: true,
+    label: "Index",
+    align: "left",
+    field: (row) => row.id,
+    sortable: true,
+  },
+  {
     name: "name",
     required: true,
-    label: "Dessert (100g serving)",
+    label: "Name",
     align: "left",
     field: (row) => row.name,
-    format: (val) => `${val}`,
     sortable: true,
   },
   {
-    name: "calories",
+    name: "category",
     align: "center",
-    label: "Calories",
-    field: "calories",
+    label: "Category",
+    field: "idCategory",
     sortable: true,
   },
-  { name: "fat", label: "Fat (g)", field: "fat", sortable: true },
-  { name: "carbs", label: "Carbs (g)", field: "carbs" },
-  { name: "protein", label: "Protein (g)", field: "protein" },
-  { name: "sodium", label: "Sodium (mg)", field: "sodium" },
+  { name: "company", label: "Company", field: "idCompany", sortable: true },
   {
-    name: "calcium",
-    label: "Calcium (%)",
-    field: "calcium",
+    name: "price",
+    label: "Price",
+    field: "price",
     sortable: true,
     sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
+  { name: "quantity", label: "Quantity", field: "quantity", sortable: true },
+  { name: "status", label: "Status", field: "status", sortable: true },
   {
-    name: "iron",
-    label: "Iron (%)",
-    field: "iron",
+    name: "stock",
+    label: "Stock",
+    field: "stock",
     sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
-  },
-];
-
-const rows = [
-  {
-    name: "Frozen Yogurt",
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: "14%",
-    iron: "1%",
-  },
-  {
-    name: "Ice cream sandwich",
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: "8%",
-    iron: "1%",
-  },
-  {
-    name: "Eclair",
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: "6%",
-    iron: "7%",
-  },
-  {
-    name: "Cupcake",
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: "3%",
-    iron: "8%",
-  },
-  {
-    name: "Gingerbread",
-    calories: 356,
-    fat: 16.0,
-    carbs: 49,
-    protein: 3.9,
-    sodium: 327,
-    calcium: "7%",
-    iron: "16%",
-  },
-  {
-    name: "Jelly bean",
-    calories: 375,
-    fat: 0.0,
-    carbs: 94,
-    protein: 0.0,
-    sodium: 50,
-    calcium: "0%",
-    iron: "0%",
-  },
-  {
-    name: "Lollipop",
-    calories: 392,
-    fat: 0.2,
-    carbs: 98,
-    protein: 0,
-    sodium: 38,
-    calcium: "0%",
-    iron: "2%",
-  },
-  {
-    name: "Honeycomb",
-    calories: 408,
-    fat: 3.2,
-    carbs: 87,
-    protein: 6.5,
-    sodium: 562,
-    calcium: "0%",
-    iron: "45%",
-  },
-  {
-    name: "Donut",
-    calories: 452,
-    fat: 25.0,
-    carbs: 51,
-    protein: 4.9,
-    sodium: 326,
-    calcium: "2%",
-    iron: "22%",
-  },
-  {
-    name: "KitKat",
-    calories: 518,
-    fat: 26.0,
-    carbs: 65,
-    protein: 7,
-    sodium: 54,
-    calcium: "12%",
-    iron: "6%",
   },
 ];
 
@@ -228,7 +169,6 @@ export default {
     return {
       filter: "",
       columns: columns,
-      rows: rows,
       rowSelected: [],
       selectedRows: [],
       loading: false,
@@ -244,9 +184,38 @@ export default {
         pageNumber: 0,
         pageSize: 15,
       },
+      productData: [],
+      paginations: {
+        rowsPerPage: 15,
+        sortBy: "name",
+      },
+      showEditBtn: false,
+      showDeleteBtn: false,
     };
   },
   methods: {
+    handleEditMultiProduct: function () {
+      alert("update multi products");
+    },
+    handleDeleteMultiProduct: function () {
+      alert("delete multi products");
+    },
+    handleUpdateSelected: function () {
+      if (this.rowSelected.length > 0) {
+        this.showEditBtn = true;
+        this.showDeleteBtn = true;
+      } else {
+        this.showEditBtn = false;
+        this.showDeleteBtn = false;
+      }
+    },
+    getSelectedString() {
+      return this.rowSelected.length === 0
+        ? ""
+        : `${this.rowSelected.length} record${
+            this.rowSelected.length > 1 ? "s" : ""
+          } selected of`;
+    },
     addUser: function () {
       alert("Add user");
     },
@@ -267,13 +236,15 @@ export default {
       }
     },
     getProductList: function () {
-      debugger;
       this.$store
         .dispatch("product/getProductList", this.productParameters)
         .then(
           (res) => {
             this.loading = false;
-            console.log("productlist >>>>>", res);
+
+            // this.productData = Object.entries(res);
+            this.productData = res;
+            console.log("productData >>>>>", this.productData);
           },
           (error) => {
             this.loading = false;

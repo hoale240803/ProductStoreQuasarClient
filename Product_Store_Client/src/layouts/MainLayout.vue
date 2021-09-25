@@ -334,6 +334,7 @@ export default {
     ...mapGetters("auth", ["getIsLoggedIn", "getUserInfo", "getFogotToken"]),
   },
   methods: {
+    onClick: function () {},
     clickAccount: function () {
       this.showAccount = false;
     },

@@ -66,17 +66,11 @@ module.exports = configure(function (ctx) {
       env: ctx.prod
         ? {
             // prod env vars here, for example:
-            // API_HOST: JSON.stringify('http://lockthbnk-ap16.asia.lockton.com:4747/api/')
-            // API_HOST: JSON.stringify('https://app.locktonwattana.com/api/')
-            API_HOST: JSON.stringify("https://demo10.locktonwattana.com/api/"),
           }
         : {
             // dev env vars here, for example:
             // API_HOST: JSON.stringify(process.env.API_HOST || 'http://localhost:8000')
-            API_HOST: JSON.stringify("http://localhost:5001/api/"),
-            // API_HOST: JSON.stringify('https://locktonflexdev.azurewebsites.net/api/')
-            // API_HOST: JSON.stringify('https://locktonflexuat.azurewebsites.net/api/')
-            // API_HOST: JSON.stringify('https://app.locktonwattana.com/api/')
+            // API_HOST: JSON.stringify("http://localhost:5001/api/"),
           },
 
       chainWebpack(chain) {
@@ -87,11 +81,11 @@ module.exports = configure(function (ctx) {
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
-    devServer: {
-      https: false,
-      port: 8080,
-      open: true, // opens browser window automatically
-    },
+    // devServer: {
+    //   https: false,
+    //   port: 8080,
+    //   open: true, // opens browser window automatically
+    // },
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {

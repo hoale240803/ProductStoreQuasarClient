@@ -4,14 +4,13 @@
     <q-table
       ref="myTable"
       title="User Table"
-      :rows="rows"
+      :data="inventoryData"
       :columns="columns"
       row-key="name"
       selection="multiple"
       :loading="loading"
       :filter="filter"
       paginations="paginations"
-      :data="userData"
       v-model:selected="selectedRows"
     >
       <!-- COMBOBOX -->
@@ -86,36 +85,38 @@
 import { mapGetters } from "vuex";
 const columns = [
   {
-    name: "name",
+    name: "index",
     required: true,
-    label: "Dessert (100g serving)",
+    label: "Index",
     align: "left",
     field: (row) => row.name,
     format: (val) => `${val}`,
     sortable: true,
   },
   {
-    name: "calories",
+    name: "name",
+    required: true,
+    label: "Name",
+    align: "left",
+    field: (row) => row.name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "category",
     align: "center",
-    label: "Calories",
-    field: "calories",
+    label: "Category",
+    field: "idCategory",
     sortable: true,
   },
-  { name: "fat", label: "Fat (g)", field: "fat", sortable: true },
-  { name: "carbs", label: "Carbs (g)", field: "carbs" },
-  { name: "protein", label: "Protein (g)", field: "protein" },
-  { name: "sodium", label: "Sodium (mg)", field: "sodium" },
+  { name: "company", label: "Company", field: "idCompany", sortable: true },
+  { name: "price", label: "Price", field: "price" },
+  { name: "quantity", label: "Quantity", field: "quantity" },
+  { name: "status", label: "Status", field: "status" },
   {
-    name: "calcium",
-    label: "Calcium (%)",
-    field: "calcium",
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
-  },
-  {
-    name: "iron",
-    label: "Iron (%)",
-    field: "iron",
+    name: "stock",
+    label: "Stock",
+    field: "stock",
     sortable: true,
     sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
   },
@@ -242,6 +243,7 @@ export default {
         { value: "value2", label: "label2" },
       ],
       userSelected: null,
+      inventoryData: [],
     };
   },
   computed: {
@@ -270,6 +272,7 @@ export default {
     loadProducts: function () {
       debugger;
       console.log("productList at Inventory>>>>>>>", this.productList);
+      this.inventoryData = this.productList;
       // console.log("productList $store", this.store.getters.productList);
     },
   },
