@@ -8,25 +8,26 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "start": "quasar dev -p 8081"
+    "start": "quasar dev -p 8081",
+    "build": "quasar build"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.12.1",
     "axios": "^0.21.1",
-    "core-js": "^3.6.5",
+    "core-js": "^3.19.1",
     "firebase": "^9.0.1",
-    "quasar": "^2.0.0",
+    "quasar": "^2.3.3",
     "vue": "^2.6.14",
-    "vue-router": "^4.0.11",
+    "vue-router": "^4.0.12",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app": "^3.0.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@quasar/app": "^3.2.3",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-vue": "^7.0.0",
-    "eslint-webpack-plugin": "^2.4.0"
+    "eslint-plugin-vue": "^7.20.0",
+    "eslint-webpack-plugin": "^2.6.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

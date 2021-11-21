@@ -1,6 +1,5 @@
 export default {
   loginSuccess(state, user) {
-    debugger;
     state.userStates.isLoggedIn = user.isAuthenticated;
     state.userStates.userInfo = user;
   },

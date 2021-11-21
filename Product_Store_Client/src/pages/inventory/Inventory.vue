@@ -270,7 +270,6 @@ export default {
       }
     },
     loadProducts: function () {
-      debugger;
       console.log("productList at Inventory>>>>>>>", this.productList);
       this.inventoryData = this.productList;
       // console.log("productList $store", this.store.getters.productList);

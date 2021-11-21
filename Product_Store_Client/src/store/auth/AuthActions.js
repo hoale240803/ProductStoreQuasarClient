@@ -22,7 +22,6 @@ export default {
     );
   },
   googleLogin({ commit }) {
-    debugger;
     return AuthServices.googleSignIn().then(
       (user) => {
         commit("loginSuccess", user);

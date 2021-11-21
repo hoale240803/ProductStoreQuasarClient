@@ -108,7 +108,6 @@ export default {
         (res) => {
           if (res) {
             let data = res.data;
-            debugger;
             console.log("reset password res>>>", res);
 
             if (res.status != 200) {
@@ -130,7 +129,8 @@ export default {
                 message: "Reset password success!",
                 position: "top",
               });
-              this.$router.push("/login");nguy
+              this.$router.push("/login");
+              nguy;
             }
           }
         },

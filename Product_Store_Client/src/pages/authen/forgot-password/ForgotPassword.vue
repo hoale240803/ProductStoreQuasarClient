@@ -77,7 +77,6 @@ export default {
       this.$store.dispatch("auth/forgotPassword", this.form).then(
         (res) => {
           let data = res.data;
-          debugger;
           if (res) {
             console.log("forgot password res>>>", data);
             let message =

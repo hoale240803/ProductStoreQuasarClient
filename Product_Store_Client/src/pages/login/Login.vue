@@ -212,7 +212,6 @@ export default {
                 "user",
                 JSON.stringify({ user: res, isLoggedIn: true })
               );
-              debugger;
               this.$q.notify({
                 color: "green-4",
                 textColor: "white",

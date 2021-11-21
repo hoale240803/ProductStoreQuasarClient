@@ -399,7 +399,6 @@ export default {
           this.$router.push("/login");
         }
       }
-      debugger;
       console.log("getIsLoggedIn getter", this.getIsLoggedIn);
     },
     // loadGoogleLogin: function () {

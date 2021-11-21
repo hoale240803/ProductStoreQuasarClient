@@ -111,7 +111,7 @@ export default {
       };
     },
     onSubmit: function () {
-      debugger;
+
       this.loading = true;
       console.log("myform>>", this.form);
       this.$store.dispatch("auth/register", this.form).then(
@@ -124,7 +124,6 @@ export default {
             // console.log("resgister res>>>", res);
             //GET DATA FROM STORE
             // console.log("res>>>", this.$store.state.auth.errorResponse);
-            debugger;
             if (res.status != "200") {
               this.$q.notify({
                 color: "negative",
